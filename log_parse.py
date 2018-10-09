@@ -2,20 +2,19 @@
 
 import datetime
 import collections
+import re
+import time
 from copy import deepcopy
 
 def get_logs(string):
-    if string and string[0] == '[':
-        try:
-            int(string[-2:])
-            return string
-        except ValueError:
-            return None
+    if re.fullmatch(r'\[\d\d/\w{3}/\d{4}\s\d\d:\d\d:\d\d\]\s\"\w+\s\S+\s\S+\"\s\d+\s\d+\s', string):
+        return string
+    return None
 
 def get_data(log):
-    start = log.find('GET ')
-    end = log.find(' ', start + 4)
-    url = log[start + 4: end + 1]
+    start = log.find('http')
+    end = log.find(' ', start+1)
+    url = log[start: end]
     request_time = log[log.rfind(' '):]
     url = url.replace('https://', '')
     url = url.replace('http://', '')
@@ -47,36 +46,7 @@ def del_www(log):
     return log
 
 def Time(log):
-    day = log[1:3]
-    month = log[4:7]
-    year = log[8:12]
-    time = log[13:21]
-    if month == 'Yan':
-        month = '01'
-    elif month == 'Feb':
-        month = '02'
-    elif month == 'Mar':
-        month = '03'
-    elif month == 'Apr':
-        month = '04'
-    elif month == 'May':
-        month = '05'
-    elif month == 'Jun':
-        month = '06'
-    elif month == 'Jul':
-        month = '07'
-    elif month == 'Aug':
-        month = '08'
-    elif month == 'Sep':
-        month = '09'
-    elif month == 'Oct':
-        month = '10'
-    elif month == 'Nov':
-        month = '11'
-    else:
-        month = '12'
-    Data_and_time = year + month + day + time
-    return Data_and_time
+    return  time.strptime(log[:22], "[%d/%b/%Y %H:%M:%S]")
 
 def response_time(log):
     start = log.rfind(' ')
