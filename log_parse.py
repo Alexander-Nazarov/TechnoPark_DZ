@@ -79,7 +79,7 @@ def parse(
     buffer = []
     URLs = []
     Top_urls = []
-    f = open('C:\\Users\\User\\Desktop\\Python\\log.log.txt')
+    f = open('C:\\Users\\User\\Desktop\\Python\\GitHub\\TechnoPark_DZ\\log.log.txt')
     LOGS = [get_logs(i) for i in f if get_logs(i) != None]
 
     '''Игнорирование файлов'''
